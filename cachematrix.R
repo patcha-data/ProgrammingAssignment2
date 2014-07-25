@@ -18,10 +18,16 @@ makeCacheMatrix <- function(x = matrix()) {
 
 	get <- function() x
 
+	# The <<- operator sets value to function's defind environment.
+	# And so Below single line function will set inv variable of makeCacheMatrix. 
+	# inv was null before. inv will be null till some one calls below setinv function.
+	# Look at cachesolve, it is calling setinv function
+
 	setinv <- function(invr) inv <<- invr
 
 	getinv <- function() inv
 
+	# return list which is input to cachesolve
 	list(set = set, get = get, setinv = setinv, getinv = getinv)
 }
 
@@ -32,6 +38,9 @@ makeCacheMatrix <- function(x = matrix()) {
 ## inverse from the cache.
 
 cacheSolve <- function(x, ...) {
+	#x must be a list which has functions getinv,get and setinv. 
+	#Below code tryies to access these functions with the help of '$'.
+
 	inv <- x$getinv()
 	if(!is.null(inv)){
 		message("getting cached data")
